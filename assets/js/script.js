@@ -37,6 +37,7 @@ async function postForm(e) {
     if (response.ok) {
         displayErrors(data);
     } else {
+        displayException(data);
         throw new Error(data.error);
     }
 }
@@ -70,6 +71,7 @@ async function getStatus(e) {
     if (response.ok) {
         displayStatus(data);
     } else {
+        displayException(data);
         throw new Error(data.error);
     }
 }
@@ -79,5 +81,16 @@ function displayStatus(data) {
     document.getElementById('results-content').textContent = `Your key is valid until
         ${data.expiry}`;
 
+    resultsModal.show();
+}
+
+function displayException(data) {
+    let heading = `An Exception Occurred`;
+    
+    let results = `<div>The API returned status code <span class='status_code'>${data.status_code}</span></div>`;
+    results += `<div>Error number: <strong><span class='status_code'>${data.error_no}</span></strong></div>`;
+    results += `<div>Error text: <strong><span class='status_code'>${data.error}</span></strong></div>`;
+    document.getElementById('resultsModalTitle').textContent = heading;
+    document.getElementById('results-content').innerHTML = results;
     resultsModal.show();
 }
